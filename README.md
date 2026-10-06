@@ -25,13 +25,13 @@ cp .env.example .env
 Push the schema (defined in `src/schema.ts`) to that database:
 
 ```bash
-bunx drizzle-kit push
+bun run db:push
 ```
 
 ## Run
 
 ```bash
-bun run index.ts
+bun run start
 ```
 
 This resolves the current month's file URL, downloads the ZIP, extracts the main data CSV, streams it into the `physicians` table (upserting by NPI so re-running a later month's file updates existing rows instead of duplicating them), then deletes the downloaded ZIP and extracted CSV.
@@ -39,7 +39,7 @@ This resolves the current month's file URL, downloads the ZIP, extracts the main
 To test against a local CSV instead of downloading the full file:
 
 ```bash
-bun run index.ts --file path/to/sample.csv
+bun run start -- --file path/to/sample.csv
 ```
 
 ## Running in Docker
@@ -56,7 +56,7 @@ Run it, pointing `DATABASE_URL` at a reachable Postgres instance (e.g. on the sa
 docker run --rm -e DATABASE_URL=postgres://user:password@host:5432/dbname physician-extract
 ```
 
-The schema still needs to be pushed once from the host (`bunx drizzle-kit push`) before the container's first run, since the image only installs production dependencies (`drizzle-kit` is a dev-only tool).
+The schema still needs to be pushed once from the host (`bun run db:push`) before the container's first run, since the image only installs production dependencies (`drizzle-kit` is a dev-only tool).
 
 To test against a local CSV instead of the full download, mount it in and pass `--file`:
 
