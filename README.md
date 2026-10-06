@@ -42,6 +42,31 @@ To test against a local CSV instead of downloading the full file:
 bun run index.ts --file path/to/sample.csv
 ```
 
+## Running in Docker
+
+Build the image:
+
+```bash
+docker build -t physician-extract .
+```
+
+Run it, pointing `DATABASE_URL` at a reachable Postgres instance (e.g. on the same Docker network, or via `host.docker.internal`):
+
+```bash
+docker run --rm -e DATABASE_URL=postgres://user:password@host:5432/dbname physician-extract
+```
+
+The schema still needs to be pushed once from the host (`bunx drizzle-kit push`) before the container's first run, since the image only installs production dependencies (`drizzle-kit` is a dev-only tool).
+
+To test against a local CSV instead of the full download, mount it in and pass `--file`:
+
+```bash
+docker run --rm \
+  -e DATABASE_URL=postgres://user:password@host:5432/dbname \
+  -v $(pwd)/sample.csv:/sample.csv:ro \
+  physician-extract --file /sample.csv
+```
+
 ## Configuration
 
 - `config/taxonomy-codes.ts` — which NUCC taxonomy codes count as "physician". Edit to narrow/widen the specialty list.
