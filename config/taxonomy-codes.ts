@@ -1,0 +1,242 @@
+/**
+ * NUCC Health Care Provider Taxonomy codes for "Allopathic & Osteopathic Physicians"
+ * (every code with the "20" provider-grouping prefix, i.e. MD/DO of any specialty).
+ * Source: NUCC Health Care Provider Taxonomy, Version 24.0, January 2024.
+ * https://www.nucc.org/images/stories/PDF/taxonomy_24_0.pdf
+ *
+ * A row only counts as a "physician" if one of its taxonomy codes appears here.
+ * Add or remove codes to change what the extract script considers a physician.
+ */
+export const taxonomyCodes: string[] = [
+  "202C00000X", // Independent Medical Examiner Physician
+  "202D00000X", // Integrative Medicine Physician
+  "202K00000X", // Phlebology Physician
+  "204C00000X", // Sports Medicine (Neuromusculoskeletal Medicine) Physician
+  "204D00000X", // Neuromusculoskeletal Medicine & OMM Physician
+  "204E00000X", // Oral & Maxillofacial Surgery (D.M.D.)
+  "204F00000X", // Transplant Surgery Physician
+  "204R00000X", // Electrodiagnostic Medicine Physician
+  "207K00000X", // Allergy & Immunology Physician
+  "207KA0200X", // Allergy Physician
+  "207KI0005X", // Clinical & Laboratory Immunology (Allergy & Immunology) Physician
+  "207L00000X", // Anesthesiology Physician
+  "207LA0401X", // Addiction Medicine (Anesthesiology) Physician
+  "207LC0200X", // Critical Care Medicine (Anesthesiology) Physician
+  "207LH0002X", // Hospice and Palliative Medicine (Anesthesiology) Physician
+  "207LP2900X", // Pain Medicine (Anesthesiology) Physician
+  "207LP3000X", // Pediatric Anesthesiology Physician
+  "207N00000X", // Dermatology Physician
+  "207ND0101X", // MOHS-Micrographic Surgery Physician
+  "207ND0900X", // Dermatopathology Physician
+  "207NI0002X", // Clinical & Laboratory Dermatological Immunology Physician
+  "207NP0225X", // Pediatric Dermatology Physician
+  "207NS0135X", // Procedural Dermatology Physician
+  "207P00000X", // Emergency Medicine Physician
+  "207PE0004X", // Emergency Medical Services (Emergency Medicine) Physician
+  "207PE0005X", // Undersea and Hyperbaric Medicine (Emergency Medicine) Physician
+  "207PH0002X", // Hospice and Palliative Medicine (Emergency Medicine) Physician
+  "207PP0204X", // Pediatric Emergency Medicine (Emergency Medicine) Physician
+  "207PS0010X", // Sports Medicine (Emergency Medicine) Physician
+  "207PT0002X", // Medical Toxicology (Emergency Medicine) Physician
+  "207Q00000X", // Family Medicine Physician
+  "207QA0000X", // Adolescent Medicine (Family Medicine) Physician
+  "207QA0401X", // Addiction Medicine (Family Medicine) Physician
+  "207QA0505X", // Adult Medicine Physician
+  "207QB0002X", // Obesity Medicine (Family Medicine) Physician
+  "207QG0300X", // Geriatric Medicine (Family Medicine) Physician
+  "207QH0002X", // Hospice and Palliative Medicine (Family Medicine) Physician
+  "207QS0010X", // Sports Medicine (Family Medicine) Physician
+  "207QS1201X", // Sleep Medicine (Family Medicine) Physician
+  "207R00000X", // Internal Medicine Physician
+  "207RA0000X", // Adolescent Medicine (Internal Medicine) Physician
+  "207RA0001X", // Advanced Heart Failure and Transplant Cardiology Physician
+  "207RA0002X", // Adult Congenital Heart Disease Physician
+  "207RA0201X", // Allergy & Immunology (Internal Medicine) Physician
+  "207RA0401X", // Addiction Medicine (Internal Medicine) Physician
+  "207RB0002X", // Obesity Medicine (Internal Medicine) Physician
+  "207RC0000X", // Cardiovascular Disease Physician
+  "207RC0001X", // Clinical Cardiac Electrophysiology Physician
+  "207RC0200X", // Critical Care Medicine (Internal Medicine) Physician
+  "207RE0101X", // Endocrinology, Diabetes & Metabolism Physician
+  "207RG0100X", // Gastroenterology Physician
+  "207RG0300X", // Geriatric Medicine (Internal Medicine) Physician
+  "207RH0000X", // Hematology (Internal Medicine) Physician
+  "207RH0002X", // Hospice and Palliative Medicine (Internal Medicine) Physician
+  "207RH0003X", // Hematology & Oncology Physician
+  "207RH0005X", // Hypertension Specialist Physician
+  "207RI0001X", // Clinical & Laboratory Immunology (Internal Medicine) Physician
+  "207RI0008X", // Hepatology Physician
+  "207RI0011X", // Interventional Cardiology Physician
+  "207RI0200X", // Infectious Disease Physician
+  "207RM1200X", // Magnetic Resonance Imaging (MRI) Internal Medicine Physician
+  "207RN0300X", // Nephrology Physician
+  "207RP1001X", // Pulmonary Disease Physician
+  "207RR0500X", // Rheumatology Physician
+  "207RS0010X", // Sports Medicine (Internal Medicine) Physician
+  "207RS0012X", // Sleep Medicine (Internal Medicine) Physician
+  "207RT0003X", // Transplant Hepatology Physician
+  "207RX0202X", // Medical Oncology Physician
+  "207SC0300X", // Clinical Cytogenetics Physician
+  "207SG0201X", // Clinical Genetics (M.D.) Physician
+  "207SG0202X", // Clinical Biochemical Genetics Physician
+  "207SG0203X", // Clinical Molecular Genetics Physician
+  "207SG0205X", // Ph.D. Medical Genetics Physician
+  "207SG0207X", // Medical Biochemical Genetics
+  "207SM0001X", // Molecular Genetic Pathology (Medical Genetics) Physician
+  "207T00000X", // Neurological Surgery Physician
+  "207U00000X", // Nuclear Medicine Physician
+  "207UN0901X", // Nuclear Cardiology Physician
+  "207UN0902X", // Nuclear Imaging & Therapy Physician
+  "207UN0903X", // In Vivo & In Vitro Nuclear Medicine Physician
+  "207V00000X", // Obstetrics & Gynecology Physician
+  "207VB0002X", // Obesity Medicine (Obstetrics & Gynecology) Physician
+  "207VC0200X", // Critical Care Medicine (Obstetrics & Gynecology) Physician
+  "207VC0300X", // Complex Family Planning Physician
+  "207VE0102X", // Reproductive Endocrinology Physician
+  "207VF0040X", // Female Pelvic Medicine and Reconstructive Surgery (Obstetrics & Gynecology)
+  "207VG0400X", // Gynecology Physician
+  "207VH0002X", // Hospice and Palliative Medicine (Obstetrics & Gynecology) Physician
+  "207VM0101X", // Maternal & Fetal Medicine Physician
+  "207VX0000X", // Obstetrics Physician
+  "207VX0201X", // Gynecologic Oncology Physician
+  "207W00000X", // Ophthalmology Physician
+  "207WX0009X", // Glaucoma Specialist (Ophthalmology) Physician
+  "207WX0107X", // Retina Specialist (Ophthalmology) Physician
+  "207WX0108X", // Uveitis and Ocular Inflammatory Disease (Ophthalmology) Physician
+  "207WX0109X", // Neuro-ophthalmology Physician
+  "207WX0110X", // Pediatric Ophthalmology and Strabismus Specialist Physician Physician
+  "207WX0120X", // Cornea and External Diseases Specialist Physician
+  "207WX0200X", // Ophthalmic Plastic and Reconstructive Surgery Physician
+  "207X00000X", // Orthopaedic Surgery Physician
+  "207XP3100X", // Pediatric Orthopaedic Surgery Physician
+  "207XS0106X", // Orthopaedic Hand Surgery Physician
+  "207XS0114X", // Adult Reconstructive Orthopaedic Surgery Physician
+  "207XS0117X", // Orthopaedic Surgery of the Spine Physician
+  "207XX0004X", // Orthopaedic Foot and Ankle Surgery Physician
+  "207XX0005X", // Sports Medicine (Orthopaedic Surgery) Physician
+  "207XX0801X", // Orthopaedic Trauma Physician
+  "207Y00000X", // Otolaryngology Physician
+  "207YP0228X", // Pediatric Otolaryngology Physician
+  "207YS0012X", // Sleep Medicine (Otolaryngology) Physician
+  "207YS0123X", // Facial Plastic Surgery Physician
+  "207YX0007X", // Plastic Surgery within the Head & Neck (Otolaryngology) Physician
+  "207YX0602X", // Otolaryngic Allergy Physician
+  "207YX0901X", // Otology & Neurotology Physician
+  "207YX0905X", // Otolaryngology/Facial Plastic Surgery Physician
+  "207ZB0001X", // Blood Banking & Transfusion Medicine Physician
+  "207ZC0006X", // Clinical Pathology Physician
+  "207ZC0008X", // Clinical Informatics (Pathology) Physician
+  "207ZC0500X", // Cytopathology Physician
+  "207ZD0900X", // Dermatopathology (Pathology) Physician
+  "207ZF0201X", // Forensic Pathology Physician
+  "207ZH0000X", // Hematology (Pathology) Physician
+  "207ZI0100X", // Immunopathology Physician
+  "207ZM0300X", // Medical Microbiology Physician
+  "207ZN0500X", // Neuropathology Physician
+  "207ZP0007X", // Molecular Genetic Pathology (Pathology) Physician
+  "207ZP0101X", // Anatomic Pathology Physician
+  "207ZP0102X", // Anatomic Pathology & Clinical Pathology Physician
+  "207ZP0104X", // Chemical Pathology Physician
+  "207ZP0105X", // Clinical Pathology/Laboratory Medicine Physician
+  "207ZP0213X", // Pediatric Pathology Physician
+  "208000000X", // Pediatrics Physician
+  "2080A0000X", // Pediatric Adolescent Medicine Physician
+  "2080B0002X", // Pediatric Obesity Medicine Physician
+  "2080C0008X", // Child Abuse Pediatrics Physician
+  "2080H0002X", // Pediatric Hospice and Palliative Medicine Physician
+  "2080I0007X", // Pediatric Clinical & Laboratory Immunology Physician
+  "2080N0001X", // Neonatal-Perinatal Medicine Physician
+  "2080P0006X", // Developmental - Behavioral Pediatrics Physician
+  "2080P0008X", // Pediatric Neurodevelopmental Disabilities Physician
+  "2080P0201X", // Pediatric Allergy/Immunology Physician
+  "2080P0202X", // Pediatric Cardiology Physician
+  "2080P0203X", // Pediatric Critical Care Medicine Physician
+  "2080P0204X", // Pediatric Emergency Medicine (Pediatrics) Physician
+  "2080P0205X", // Pediatric Endocrinology Physician
+  "2080P0206X", // Pediatric Gastroenterology Physician
+  "2080P0207X", // Pediatric Hematology & Oncology Physician
+  "2080P0208X", // Pediatric Infectious Diseases Physician
+  "2080P0210X", // Pediatric Nephrology Physician
+  "2080P0214X", // Pediatric Pulmonology Physician
+  "2080P0216X", // Pediatric Rheumatology Physician
+  "2080S0010X", // Pediatric Sports Medicine Physician
+  "2080S0012X", // Pediatric Sleep Medicine Physician
+  "2080T0002X", // Pediatric Medical Toxicology Physician
+  "2080T0004X", // Pediatric Transplant Hepatology Physician
+  "208100000X", // Physical Medicine & Rehabilitation Physician
+  "2081H0002X", // Hospice and Palliative Medicine (Physical Medicine & Rehabilitation) Physician
+  "2081N0008X", // Neuromuscular Medicine (Physical Medicine & Rehabilitation) Physician
+  "2081P0004X", // Spinal Cord Injury Medicine Physician
+  "2081P0010X", // Pediatric Rehabilitation Medicine Physician
+  "2081P0301X", // Brain Injury Medicine (Physical Medicine & Rehabilitation) Physician
+  "2081P2900X", // Pain Medicine (Physical Medicine & Rehabilitation) Physician
+  "2081S0010X", // Sports Medicine (Physical Medicine & Rehabilitation) Physician
+  "208200000X", // Plastic Surgery Physician
+  "2082S0099X", // Plastic Surgery Within the Head and Neck (Plastic Surgery) Physician
+  "2082S0105X", // Surgery of the Hand (Plastic Surgery) Physician
+  "2083A0100X", // Aerospace Medicine Physician
+  "2083A0300X", // Addiction Medicine (Preventive Medicine) Physician
+  "2083B0002X", // Obesity Medicine (Preventive Medicine) Physician
+  "2083C0008X", // Clinical Informatics Physician
+  "2083P0011X", // Undersea and Hyperbaric Medicine (Preventive Medicine) Physician
+  "2083P0500X", // Preventive Medicine/Occupational Environmental Medicine Physician
+  "2083P0901X", // Public Health & General Preventive Medicine Physician
+  "2083S0010X", // Sports Medicine (Preventive Medicine) Physician
+  "2083T0002X", // Medical Toxicology (Preventive Medicine) Physician
+  "2083X0100X", // Occupational Medicine Physician
+  "2084A0401X", // Addiction Medicine (Psychiatry & Neurology) Physician
+  "2084A2900X", // Neurocritical Care Physician
+  "2084B0002X", // Obesity Medicine (Psychiatry & Neurology) Physician
+  "2084B0040X", // Behavioral Neurology & Neuropsychiatry Physician
+  "2084D0003X", // Diagnostic Neuroimaging (Psychiatry & Neurology) Physician
+  "2084E0001X", // Epilepsy Physician
+  "2084F0202X", // Forensic Psychiatry Physician
+  "2084H0002X", // Hospice and Palliative Medicine (Psychiatry & Neurology) Physician
+  "2084N0008X", // Neuromuscular Medicine (Psychiatry & Neurology) Physician
+  "2084N0400X", // Neurology Physician
+  "2084N0402X", // Neurology with Special Qualifications in Child Neurology Physician
+  "2084N0600X", // Clinical Neurophysiology Physician
+  "2084P0005X", // Neurodevelopmental Disabilities Physician
+  "2084P0015X", // Psychosomatic Medicine Physician
+  "2084P0301X", // Brain Injury Medicine (Psychiatry & Neurology) Physician
+  "2084P0800X", // Psychiatry Physician
+  "2084P0802X", // Addiction Psychiatry Physician
+  "2084P0804X", // Child & Adolescent Psychiatry Physician
+  "2084P0805X", // Geriatric Psychiatry Physician
+  "2084P2900X", // Pain Medicine (Psychiatry & Neurology) Physician
+  "2084S0010X", // Sports Medicine (Psychiatry & Neurology) Physician
+  "2084S0012X", // Sleep Medicine (Psychiatry & Neurology) Physician
+  "2084V0102X", // Vascular Neurology Physician
+  "2085B0100X", // Body Imaging Physician
+  "2085D0003X", // Diagnostic Neuroimaging (Radiology) Physician
+  "2085H0002X", // Hospice and Palliative Medicine (Radiology) Physician
+  "2085N0700X", // Neuroradiology Physician
+  "2085N0904X", // Nuclear Radiology Physician
+  "2085P0229X", // Pediatric Radiology Physician
+  "2085R0001X", // Radiation Oncology Physician
+  "2085R0202X", // Diagnostic Radiology Physician
+  "2085R0203X", // Therapeutic Radiology Physician
+  "2085R0204X", // Vascular & Interventional Radiology Physician
+  "2085R0205X", // Radiological Physics Physician
+  "2085U0001X", // Diagnostic Ultrasound Physician
+  "208600000X", // Surgery Physician
+  "2086H0002X", // Hospice and Palliative Medicine (Surgery) Physician
+  "2086S0102X", // Surgical Critical Care Physician
+  "2086S0105X", // Surgery of the Hand (Surgery) Physician
+  "2086S0120X", // Pediatric Surgery Physician
+  "2086S0122X", // Plastic and Reconstructive Surgery Physician
+  "2086S0127X", // Trauma Surgery Physician
+  "2086S0129X", // Vascular Surgery Physician
+  "2086X0206X", // Surgical Oncology Physician
+  "208800000X", // Urology Physician
+  "2088F0040X", // Female Pelvic Medicine and Reconstructive Surgery (Urology) Physician
+  "2088P0231X", // Pediatric Urology Physician
+  "208C00000X", // Colon & Rectal Surgery Physician
+  "208D00000X", // General Practice Physician
+  "208G00000X", // Thoracic Surgery (Cardiothoracic Vascular Surgery) Physician
+  "208M00000X", // Hospitalist Physician
+  "208U00000X", // Clinical Pharmacology Physician
+  "208VP0000X", // Pain Medicine Physician
+  "208VP0014X", // Interventional Pain Medicine Physician
+  "209800000X", // Legal Medicine (M.D./D.O.) Physician
+];
