@@ -8,6 +8,7 @@ export const physicians = pgTable("physicians", {
   middleName: text("middle_name"),
   credential: text("credential"),
   primaryTaxonomyCode: text("primary_taxonomy_code"),
+  primaryTaxonomyName: text("primary_taxonomy_name"),
 
   mailingAddress1: text("mailing_address_1"),
   mailingAddress2: text("mailing_address_2"),

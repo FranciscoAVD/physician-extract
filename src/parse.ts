@@ -1,5 +1,6 @@
 import { Readable } from "node:stream";
 import { parse } from "csv-parse";
+import { taxonomyCodeNames } from "../config/taxonomy-codes";
 import { isAllowedState, physicianTaxonomyCodes } from "./filters";
 import type { PhysicianRow } from "./schema";
 
@@ -34,6 +35,7 @@ function toRow(record: Record<string, string>, taxonomyCode: string): PhysicianR
     middleName: record["Provider Middle Name"] || null,
     credential: record["Provider Credential Text"] || null,
     primaryTaxonomyCode: taxonomyCode,
+    primaryTaxonomyName: taxonomyCodeNames[taxonomyCode] ?? null,
 
     mailingAddress1: record["Provider First Line Business Mailing Address"] || null,
     mailingAddress2: record["Provider Second Line Business Mailing Address"] || null,

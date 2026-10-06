@@ -49,7 +49,7 @@ bun run index.ts --file path/to/sample.csv
 
 ## Schema
 
-The `physicians` table (`src/schema.ts`) stores name, credential, primary taxonomy code, mailing and practice addresses, phone, enumeration/update dates, and an `is_active` flag derived from NPPES's deactivation fields (plus the raw `deactivation_reason_code`, `deactivation_date`, `reactivation_date` for history).
+The `physicians` table (`src/schema.ts`) stores name, credential, primary taxonomy code and name (`primary_taxonomy_name` is `null` if the code isn't in `config/taxonomy-codes.ts`'s map), mailing and practice addresses, phone, enumeration/update dates, and an `is_active` flag derived from NPPES's deactivation fields (plus the raw `deactivation_reason_code`, `deactivation_date`, `reactivation_date` for history).
 
 ---
 
