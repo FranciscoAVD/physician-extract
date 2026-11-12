@@ -14,6 +14,10 @@ RUN bun install --production --frozen-lockfile
 
 COPY . .
 
+# /app is root-owned, so give the unprivileged runtime user a writable work
+# directory for the CSV extracted out of the NPPES zip.
+RUN mkdir -p /app/.tmp && chown bun:bun /app/.tmp
+
 USER bun
 
 ENTRYPOINT ["bun", "run", "index.ts"]

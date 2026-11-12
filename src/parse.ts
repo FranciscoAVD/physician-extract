@@ -11,16 +11,76 @@ export interface ParseStats {
   matched: number;
 }
 
+/**
+ * Picks the physician taxonomy code to record as primary. NPPES flags a
+ * provider's primary taxonomy with "Y" in the matching Primary Taxonomy Switch
+ * column, so that slot wins when its code is a physician code; otherwise we
+ * fall back to the first physician code on the record (a provider whose
+ * flagged primary is some non-physician taxonomy still counts as a physician
+ * on the strength of their other codes).
+ */
 function matchedTaxonomyCode(record: Record<string, string>): string | undefined {
+  let fallback: string | undefined;
+
   for (let i = 1; i <= TAXONOMY_COLUMN_COUNT; i++) {
     const code = record[`Healthcare Provider Taxonomy Code_${i}`]?.trim();
-    if (code && physicianTaxonomyCodes.has(code)) return code;
+    if (!code || !physicianTaxonomyCodes.has(code)) continue;
+
+    const isPrimary =
+      record[`Healthcare Provider Primary Taxonomy Switch_${i}`]?.trim().toUpperCase() === "Y";
+    if (isPrimary) return code;
+
+    fallback ??= code;
   }
-  return undefined;
+
+  return fallback;
+}
+
+/**
+ * Converts an NPPES `MM/DD/YYYY` date to the ISO `YYYY-MM-DD` form Postgres
+ * `date` columns take, or null if absent/unparseable. Deliberately string-based
+ * rather than going through `Date`, so a date-only value can't be shifted a day
+ * by a timezone offset.
+ */
+function toIsoDate(value: string | null): string | null {
+  if (!value) return null;
+
+  const match = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!match) return null;
+
+  const [, month, day, year] = match;
+  if (!month || !day || !year) return null;
+
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+}
+
+/**
+ * An NPI with a deactivation date is inactive unless NPPES later reactivated
+ * it — reactivated records keep both dates, so the newer one decides. The
+ * decision keys off the *raw* values so that a date NPPES wrote in an
+ * unexpected format (which can't land in a `date` column) still counts as
+ * deactivated rather than silently reading as active.
+ */
+function derivedIsActive(
+  rawDeactivation: string | null,
+  rawReactivation: string | null,
+  deactivationDate: string | null,
+  reactivationDate: string | null,
+): boolean {
+  if (!rawDeactivation) return true;
+  if (!rawReactivation) return false;
+  // A reactivation is on record; trust it if either date failed to parse.
+  if (!deactivationDate || !reactivationDate) return true;
+
+  // ISO dates sort lexicographically, so a plain comparison is chronological.
+  return reactivationDate >= deactivationDate;
 }
 
 function toRow(record: Record<string, string>, taxonomyCode: string): PhysicianRow {
-  const deactivationDate = record["NPI Deactivation Date"]?.trim() || null;
+  const rawDeactivation = record["NPI Deactivation Date"]?.trim() || null;
+  const rawReactivation = record["NPI Reactivation Date"]?.trim() || null;
+  const deactivationDate = toIsoDate(rawDeactivation);
+  const reactivationDate = toIsoDate(rawReactivation);
   const npi = record["NPI"];
   const entityTypeCode = record["Entity Type Code"];
   if (!npi || !entityTypeCode) {
@@ -50,13 +110,18 @@ function toRow(record: Record<string, string>, taxonomyCode: string): PhysicianR
     practiceZip: record["Provider Business Practice Location Address Postal Code"] || null,
 
     phone: record["Provider Business Practice Location Address Telephone Number"] || null,
-    enumerationDate: record["Provider Enumeration Date"] || null,
-    lastUpdateDate: record["Last Update Date"] || null,
+    enumerationDate: toIsoDate(record["Provider Enumeration Date"]?.trim() || null),
+    lastUpdateDate: toIsoDate(record["Last Update Date"]?.trim() || null),
 
-    isActive: deactivationDate === null,
+    isActive: derivedIsActive(
+      rawDeactivation,
+      rawReactivation,
+      deactivationDate,
+      reactivationDate,
+    ),
     deactivationReasonCode: record["NPI Deactivation Reason Code"]?.trim() || null,
     deactivationDate,
-    reactivationDate: record["NPI Reactivation Date"]?.trim() || null,
+    reactivationDate,
   };
 }
 

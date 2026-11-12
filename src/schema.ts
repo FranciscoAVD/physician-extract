@@ -1,4 +1,4 @@
-import { boolean, pgTable, text } from "drizzle-orm/pg-core";
+import { boolean, date, pgTable, text } from "drizzle-orm/pg-core";
 
 export const physicians = pgTable("physicians", {
   npi: text("npi").primaryKey(),
@@ -23,13 +23,13 @@ export const physicians = pgTable("physicians", {
   practiceZip: text("practice_zip"),
 
   phone: text("phone"),
-  enumerationDate: text("enumeration_date"),
-  lastUpdateDate: text("last_update_date"),
+  enumerationDate: date("enumeration_date"),
+  lastUpdateDate: date("last_update_date"),
 
   isActive: boolean("is_active").notNull(),
   deactivationReasonCode: text("deactivation_reason_code"),
-  deactivationDate: text("deactivation_date"),
-  reactivationDate: text("reactivation_date"),
+  deactivationDate: date("deactivation_date"),
+  reactivationDate: date("reactivation_date"),
 });
 
 export type PhysicianRow = typeof physicians.$inferInsert;

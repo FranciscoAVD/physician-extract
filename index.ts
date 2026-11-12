@@ -1,44 +1,58 @@
-import { $ } from "bun";
-import { downloadFile } from "./src/download";
+import { mkdir, mkdtemp, rm } from "node:fs/promises";
 import { extractMainCsv } from "./src/extract";
 import { parseAndUpsertPhysicians } from "./src/parse";
-import { resolveMonthlyFileUrl } from "./src/resolveUrl";
 import { upsertPhysicians } from "./src/db";
+import { env } from "./src/env";
 
 const WORK_DIR = ".tmp";
 
-async function main() {
-  const fileArgIndex = process.argv.indexOf("--file");
-  const localFile = fileArgIndex !== -1 ? process.argv[fileArgIndex + 1] : undefined;
+async function findInputFile(folderPath: string): Promise<string> {
+  for (const pattern of ["*.zip", "*.csv"]) {
+    const matches: string[] = [];
+    for await (const name of new Bun.Glob(pattern).scan({ cwd: folderPath })) {
+      matches.push(name);
+    }
 
-  let csvPath: string;
-  let zipPath: string | undefined;
-
-  if (localFile) {
-    csvPath = localFile;
-    console.log(`Using local file: ${csvPath}`);
-  } else {
-    await $`mkdir -p ${WORK_DIR}`.quiet();
-
-    console.log("Resolving current NPPES file URL...");
-    const url = await resolveMonthlyFileUrl();
-    console.log(`Found: ${url}`);
-
-    zipPath = `${WORK_DIR}/${url.split("/").pop()}`;
-    await downloadFile(url, zipPath);
-
-    console.log("Extracting main data file...");
-    csvPath = await extractMainCsv(zipPath, WORK_DIR);
-    console.log(`Extracted: ${csvPath}`);
+    if (matches.length === 1) return `${folderPath}/${matches[0]}`;
+    if (matches.length > 1) {
+      throw new Error(
+        `Found multiple ${pattern} files in ${folderPath} (${matches.join(", ")}) — leave only the one to process.`,
+      );
+    }
   }
 
-  console.log("Parsing and loading physicians...");
-  const stats = await parseAndUpsertPhysicians(csvPath, upsertPhysicians);
-  console.log(`Scanned ${stats.scanned} rows, upserted ${stats.matched} physicians.`);
+  throw new Error(`No .zip or .csv file found in ${folderPath}`);
+}
 
-  if (!localFile) {
-    console.log("Cleaning up downloaded/extracted files...");
-    await $`rm -f ${zipPath} ${csvPath}`.quiet();
+async function main() {
+  const filePath = await findInputFile(env.INPUT_DIR);
+
+  let csvPath: string;
+  // Each run extracts into its own directory so a leftover CSV from an earlier
+  // (crashed) run can never be picked up in place of this month's file.
+  let runDir: string | undefined;
+
+  if (filePath.endsWith(".zip")) {
+    await mkdir(WORK_DIR, { recursive: true });
+    runDir = await mkdtemp(`${WORK_DIR}/run-`);
+
+    console.log(`Extracting main data file from ${filePath}...`);
+    csvPath = await extractMainCsv(filePath, runDir);
+    console.log(`Extracted: ${csvPath}`);
+  } else {
+    csvPath = filePath;
+    console.log(`Using local file: ${csvPath}`);
+  }
+
+  try {
+    console.log("Parsing and loading physicians...");
+    const stats = await parseAndUpsertPhysicians(csvPath, upsertPhysicians);
+    console.log(`Scanned ${stats.scanned} rows, upserted ${stats.matched} physicians.`);
+  } finally {
+    if (runDir) {
+      console.log("Cleaning up extracted files...");
+      await rm(runDir, { recursive: true, force: true });
+    }
   }
 }
 
