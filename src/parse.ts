@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import { parse } from "csv-parse";
 import { taxonomyCodeNames } from "../config/taxonomy-codes";
-import { isAllowedState, physicianTaxonomyCodes } from "./filters";
+import { isAllowedState, customerTaxonomyCodes } from "./filters";
 import type { PhysicianRow } from "./schema";
 
 const TAXONOMY_COLUMN_COUNT = 15;
@@ -12,19 +12,18 @@ export interface ParseStats {
 }
 
 /**
- * Picks the physician taxonomy code to record as primary. NPPES flags a
- * provider's primary taxonomy with "Y" in the matching Primary Taxonomy Switch
- * column, so that slot wins when its code is a physician code; otherwise we
- * fall back to the first physician code on the record (a provider whose
- * flagged primary is some non-physician taxonomy still counts as a physician
- * on the strength of their other codes).
+ * Picks the taxonomy code to record as primary. NPPES flags a provider's
+ * primary taxonomy with "Y" in the matching Primary Taxonomy Switch column, so
+ * that slot wins when its code is one we keep; otherwise we fall back to the
+ * first kept code on the record (a provider whose flagged primary is some
+ * unrelated taxonomy still counts on the strength of their other codes).
  */
 function matchedTaxonomyCode(record: Record<string, string>): string | undefined {
   let fallback: string | undefined;
 
   for (let i = 1; i <= TAXONOMY_COLUMN_COUNT; i++) {
     const code = record[`Healthcare Provider Taxonomy Code_${i}`]?.trim();
-    if (!code || !physicianTaxonomyCodes.has(code)) continue;
+    if (!code || !customerTaxonomyCodes.has(code)) continue;
 
     const isPrimary =
       record[`Healthcare Provider Primary Taxonomy Switch_${i}`]?.trim().toUpperCase() === "Y";
@@ -38,20 +37,21 @@ function matchedTaxonomyCode(record: Record<string, string>): string | undefined
 
 /**
  * Converts an NPPES `MM/DD/YYYY` date to the ISO `YYYY-MM-DD` form Postgres
- * `date` columns take, or null if absent/unparseable. Deliberately string-based
- * rather than going through `Date`, so a date-only value can't be shifted a day
- * by a timezone offset.
+ * `date` columns take, or null if absent/unparseable.
+ *
+ * `MM/DD/YYYY` is a non-ISO format, so it parses as *local* midnight and
+ * `toISOString` then reads it in UTC. That only lands on the right calendar day
+ * west of Greenwich — true of every US timezone, and this is only deployed in
+ * US east coast data centers. A runner east of UTC would shift every date here
+ * back by one day.
  */
 function toIsoDate(value: string | null): string | null {
   if (!value) return null;
 
-  const match = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (!match) return null;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
 
-  const [, month, day, year] = match;
-  if (!month || !day || !year) return null;
-
-  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  return parsed.toISOString().slice(0, 10);
 }
 
 /**

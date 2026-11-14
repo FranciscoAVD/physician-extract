@@ -1,7 +1,7 @@
 import { taxonomyCodes } from "../config/taxonomy-codes";
 import { allowedStates } from "../config/states";
 
-export const physicianTaxonomyCodes = new Set(taxonomyCodes);
+export const customerTaxonomyCodes = new Set(taxonomyCodes);
 
 const stateSet = new Set(allowedStates);
 
